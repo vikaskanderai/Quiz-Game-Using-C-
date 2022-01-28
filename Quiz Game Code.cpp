@@ -110,6 +110,7 @@ int main()
                         player=2;
                         break;
                 default:cout<<"!!!INVALID INPUT!!!\n"<<endl;
+                break;
             }
         }
         
@@ -128,6 +129,7 @@ int main()
                         cout<<"You selected HARD"<<endl;
                         break;
                 default:cout<<"!!!INVALID INPUT!!!"<<endl;
+                break;
                 }
         }
         //verify player details
