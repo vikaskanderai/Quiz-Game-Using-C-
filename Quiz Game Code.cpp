@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<fstream>
 using namespace std;
 
 class question
@@ -42,12 +43,10 @@ class hard: public question
         
         if(choice==ans)
         {
-            cout<<"!!You are right!!"<<endl;
             score++;
         }
         else
         {
-            cout<<"Sorry...\nThe correct option is 'option "<<ans<<"'"<<endl; 
             score-=0.5;
         }
     }
@@ -69,18 +68,18 @@ class easy: public question
         
         if(choice==ans)
         {
-            cout<<"!!You are right!!"<<endl;
             score++;
         }
         else
         {
-            cout<<"Sorry...\nThe correct option is 'option "<<ans<<"'"<<endl; 
+            ;
         }
     }
 };
 
 int main()
 {
+    char in[10]="  ",arr[500];
     int i=0,j=0;
     int check=2;
     string player1,player2;
@@ -92,27 +91,9 @@ int main()
     //collect player details
     while(check==2)
     {
-        while(i<1||i>2)   //to set single or multi-player
-        {
-            cout<<"CHOOSE GAME MODE\nENTER:\n -->'1' for single payer\n -->'2' for double player"<<endl;
-            cin>>i;
-            
-            switch(i)  
-            {
-                case 1: cout<<"\nEnter your name (in CAPs):"<<endl;
-                        cin>>player1;
-                        player=1;
-                        break;
-                case 2: cout<<"\nEnter player 1 name (in CAPs):"<<endl;
-                        cin>>player1;
-                        cout<<"Enter player 2 name (in CAPs):"<<endl;
-                        cin>>player2;
-                        player=2;
-                        break;
-                default:cout<<"!!!INVALID INPUT!!!\n"<<endl;
-                break;
-            }
-        }
+      
+        cout<<"Enter the number of players\n"<<endl;
+        cin>>player;
         
         
         while(j<1||j>2)   //to select game level
@@ -143,18 +124,15 @@ int main()
         }
     }
     
+    float p1score=0;
+    float p2score=0;
+    float p3=0;
     for(i=0;i<player;i++)
     {
-        float p1score;
-        float p2score;
-        if(i==0)
-        {
-            cout<<"\n\nIt is "<<player1<<"'s turn"<<endl;
-        }
-        if(i==1)
-        {
-            cout<<"\n\nIt is "<<player2<<"'s turn"<<endl;
-        }
+        
+   
+        cout<<"\n\nIt is player"<<i+1<<"'s turn"<<endl;
+        
         switch(level)   //asking questions
         {
             case 1:{
@@ -169,16 +147,16 @@ int main()
                         e4.askquestion();
                         e5.setquestion("\nQ5.Which country gifted ‘Statue of Liberty’","Germany ", "France", "Spain",'b');
                         e5.askquestion();
-                        if(i==0)
-                        {
-                            p1score=e5.showscore();
-                            cout<<endl<<player1<<"'s score is "<<p1score<<endl;
-                        }
-                        if(i==1)
-                        {
-                            p2score=(e5.showscore()-p1score);
-                            cout<<endl<<player2<<"'s score is "<<p2score<<endl;
-                        }
+                        p1score= e5.showscore();
+                        p2score=p1score-p3;
+                        p3=p1score;
+                        ofstream myfile("score_sheet.txt",ios::app);
+                        myfile<<p2score;
+                        myfile<<in;
+                        myfile.close();
+                        
+                        
+                       
                    }
                     break;
             case 2:{
@@ -194,33 +172,25 @@ int main()
                         h5.setquestion("\nQ5.What is the radius of a cricket ball","2.8 inches","2.6 inches","2.7 inches",'a');
                         h5.askquestion();
                         h5.showscore();
-                        if(i==0)
-                        {
-                            p1score=h5.showscore();
-                            cout<<endl<<player1<<"'s score is "<<p1score<<endl;
-                        }
-                        if(i==1)
-                        {
-                            p2score=(h5.showscore()-p1score);
-                            cout<<endl<<player2<<"'s score is "<<p2score<<endl;
-                        }
+                        p1score= e5.showscore();
+                        p2score=p1score-p3;
+                        p3=p1score;
+                        ofstream myfile("score_sheet.txt",ios::app);
+                        myfile<<p2score;
+                        myfile<<in;
+                        myfile.close();
+                        
                    }   
                     break;
+                    
+                    
         }
-        if(i==1)
-        {
-            cout<<endl<<"\nRESULT:"<<endl;
-            if(p1score>p2score)
-            {
-                cout<<"CONGRATS!!\n"<<player1<<" IS THE WINNER"<<endl;
-            }
-            else if(p1score==p2score)
-            {
-                cout<<"WOW!!\nITS A TIE"<<endl;
-            }
-            else
-                cout<<"CONGRATS!!\n"<<player2<<" IS THE WINNER"<<endl;
-        }
+      
     }
+    ifstream obj("score_sheet.txt");
+    obj.getline(arr,500);
+    cout<<"scores are:\n"<<arr<<endl;
+    obj.close();
     return 0;
 }  
+
